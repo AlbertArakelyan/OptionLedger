@@ -3,6 +3,9 @@ import UsersPage from "./pages/UsersPage";
 import OptionsPage from "./pages/OptionsPage";
 import OwnershipPage from "./pages/OwnershipPage";
 import MatrixPage from "./pages/MatrixPage";
+import { Toast } from "./components";
+import { AppProvider } from "./hooks";
+import "./styles/global.css";
 import "./App.css";
 
 type Page = "users" | "options" | "ownership" | "matrix";
@@ -10,57 +13,43 @@ type Page = "users" | "options" | "ownership" | "matrix";
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>("users");
 
+  const navItems: Array<{ id: Page; label: string }> = [
+    { id: "users", label: "Users" },
+    { id: "options", label: "Options" },
+    { id: "ownership", label: "Ownership" },
+    { id: "matrix", label: "Matrix" },
+  ];
+
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>OptionLedger</h1>
-      <nav style={{ marginBottom: "30px" }}>
-        <button
-          onClick={() => setCurrentPage("users")}
-          style={{
-            marginRight: "10px",
-            padding: "10px 20px",
-            fontWeight: currentPage === "users" ? "bold" : "normal",
-          }}
-        >
-          Users
-        </button>
-        <button
-          onClick={() => setCurrentPage("options")}
-          style={{
-            marginRight: "10px",
-            padding: "10px 20px",
-            fontWeight: currentPage === "options" ? "bold" : "normal",
-          }}
-        >
-          Options
-        </button>
-        <button
-          onClick={() => setCurrentPage("ownership")}
-          style={{
-            marginRight: "10px",
-            padding: "10px 20px",
-            fontWeight: currentPage === "ownership" ? "bold" : "normal",
-          }}
-        >
-          Ownership
-        </button>
-        <button
-          onClick={() => setCurrentPage("matrix")}
-          style={{
-            padding: "10px 20px",
-            fontWeight: currentPage === "matrix" ? "bold" : "normal",
-          }}
-        >
-          Matrix
-        </button>
-      </nav>
-      <main>
-        {currentPage === "users" && <UsersPage />}
-        {currentPage === "options" && <OptionsPage />}
-        {currentPage === "ownership" && <OwnershipPage />}
-        {currentPage === "matrix" && <MatrixPage />}
-      </main>
-    </div>
+    <AppProvider>
+      <div className="app-container">
+        <header className="app-header">
+          <h1>📊 OptionLedger</h1>
+          <p className="subtitle">Shared Stock Option Management</p>
+        </header>
+
+        <nav className="app-nav">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentPage(item.id)}
+              className={`nav-button ${currentPage === item.id ? "active" : ""}`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <main className="app-main">
+          {currentPage === "users" && <UsersPage />}
+          {currentPage === "options" && <OptionsPage />}
+          {currentPage === "ownership" && <OwnershipPage />}
+          {currentPage === "matrix" && <MatrixPage />}
+        </main>
+      </div>
+
+      <Toast />
+    </AppProvider>
   );
 }
 

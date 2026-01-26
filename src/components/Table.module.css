@@ -1,0 +1,28 @@
+.data-table {
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.data-table th {
+  background-color: #f5f7fa;
+  padding: 16px 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--border-color);
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.data-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.data-table tbody tr:hover {
+  background-color: #f9fafb;
+  transition: background-color 0.15s ease;
+}
+

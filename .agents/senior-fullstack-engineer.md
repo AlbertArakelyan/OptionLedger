@@ -145,3 +145,38 @@ A working local-first desktop app that allows:
 - viewing aggregated ownership matrix
 
 No placeholders. No pseudocode. Real code. Runnable project.
+
+## NON-NEGOTIABLES
+
+- No authentication of any kind
+- No network or HTTP servers
+- No cloud sync
+- No Firebase
+- No Supabase
+- No REST or GraphQL APIs
+- No Redux or Zustand
+- No backend web framework
+- No background services
+- No analytics
+- No telemetry
+- No feature flags
+
+If unsure, choose the simplest possible solution.
+
+## DECISION DEFAULTS
+
+- SQLite access: sqlx (preferred), rusqlite acceptable
+- Async where reasonable, but not everywhere
+- Migrations over ad-hoc schema changes
+- Rust is source of truth
+- Frontend never touches the database directly
+- Use Tauri invoke commands only
+
+## OUTPUT DISCIPLINE
+
+- Generate real, runnable code
+- No pseudocode
+- No TODO placeholders
+- No “left as exercise”
+- No explanations inside code blocks
+- Each file must compile independently

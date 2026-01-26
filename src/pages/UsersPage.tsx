@@ -1,18 +1,54 @@
-import { useState, useEffect } from "react";
-import { User, createUser, listUsers, deleteUser } from "../api";
+import { useEffect, useState } from "react";
+import { User, listUsers as listUsersApi, createUser as createUserApi, deleteUser as deleteUserApi } from "../api";
+import { Table, FormInput, ConfirmModal, LoadingSpinner, toast } from "../components";
+import { useFormState } from "../hooks";
+import styles from "./UsersPage.module.css";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [confirmModal, setConfirmModal] = useState<{ isOpen: boolean; userId: number | null }>({ isOpen: false, userId: null });
+
+  const form = useFormState(
+    { name: "" },
+    async (values) => {
+      await createUserApi(values.name.trim());
+      toast.success("User created successfully");
+      await loadUsers();
+    },
+    (values) => {
+      const errors: Record<string, string> = {};
+      if (!values.name.trim()) {
+        errors.name = "User name is required";
+      }
+      if (values.name.length > 100) {
+        errors.name = "Name must be less than 100 characters";
+      }
+      return errors;
+    }
+  );
 
   const loadUsers = async () => {
+    setLoading(true);
     try {
-      const data = await listUsers();
+      const data = await listUsersApi();
       setUsers(data);
-      setError("");
-    } catch (e) {
-      setError(String(e));
+    } catch (error) {
+      toast.error("Failed to load users");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (confirmModal.userId === null) return;
+    try {
+      await deleteUserApi(confirmModal.userId);
+      toast.success("User deleted successfully");
+      setConfirmModal({ isOpen: false, userId: null });
+      await loadUsers();
+    } catch (error) {
+      toast.error("Failed to delete user");
     }
   };
 
@@ -20,64 +56,50 @@ export default function UsersPage() {
     loadUsers();
   }, []);
 
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) return;
-    try {
-      await createUser(name.trim());
-      setName("");
-      await loadUsers();
-      setError("");
-    } catch (e) {
-      setError(String(e));
-    }
-  };
+  if (loading) {
+    return <LoadingSpinner message="Loading users..." />;
+  }
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Delete this user?")) return;
-    try {
-      await deleteUser(id);
-      await loadUsers();
-      setError("");
-    } catch (e) {
-      setError(String(e));
-    }
-  };
+  const tableRows = users.map((user) => [
+    user.id,
+    user.name,
+    <button key="delete" onClick={() => setConfirmModal({ isOpen: true, userId: user.id })} className={styles.btnDangerSmall}>
+      Delete
+    </button>,
+  ]);
 
   return (
-    <div>
+    <div className={styles.pageContainer}>
       <h2>Users Manager</h2>
-      <form onSubmit={handleCreate} style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="User name"
-          style={{ marginRight: "10px", padding: "5px" }}
+
+      <form onSubmit={form.handleSubmit} className={styles.formContainer}>
+        <FormInput
+          label="User Name"
+          name="name"
+          value={form.values.name}
+          onChange={form.handleChange}
+          placeholder="Enter user name"
+          error={form.errors.name}
+          disabled={form.loading}
         />
-        <button type="submit">Add User</button>
+        {form.submitError && <div className="error">{form.submitError}</div>}
+        <button type="submit" disabled={form.loading} className={styles.btnAdd}>
+          {form.loading ? "Adding..." : "Add User"}
+        </button>
       </form>
-      {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
-      <table border={1} cellPadding={8} cellSpacing={0} style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.name}</td>
-              <td>
-                <button onClick={() => handleDelete(user.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <Table headers={["ID", "Name", "Actions"]} rows={tableRows} emptyMessage="No users yet. Create one to get started!" />
+
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmModal({ isOpen: false, userId: null })}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDangerous={true}
+      />
     </div>
   );
 }

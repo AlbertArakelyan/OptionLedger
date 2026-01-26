@@ -1,0 +1,99 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 32px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h2 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.modal-content p {
+  margin: 0 0 28px 0;
+  color: var(--text-light);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 28px;
+}
+
+.modal-actions button {
+  min-width: 110px;
+  padding: 11px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--border-radius);
+}
+
+.modal-actions .btn-primary {
+  background-color: var(--primary-color);
+}
+
+.modal-actions .btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.modal-actions .btn-danger {
+  background-color: var(--danger-color);
+}
+
+.modal-actions .btn-danger:hover {
+  background-color: var(--danger-hover);
+}
+
+.modal-actions button:last-child {
+  margin-left: auto;
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 24px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+}
+

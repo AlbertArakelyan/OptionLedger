@@ -1,0 +1,128 @@
+.pageContainer {
+  padding: 0;
+}
+
+.matrixHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 28px 32px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+.matrixControls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.matrixControls button {
+  padding: 10px 20px;
+  height: 40px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.lastUpdated {
+  font-size: 13px;
+  color: var(--text-light);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  background-color: white;
+}
+
+.matrixTable {
+  min-width: 600px;
+  width: 100%;
+}
+
+.optionCell {
+  font-weight: 500;
+}
+
+.optionName {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.optionDetail {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 400;
+}
+
+.userColumn {
+  text-align: center;
+  min-width: 110px;
+  font-weight: 500;
+}
+
+.qtyCell {
+  text-align: right;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.totalColumn {
+  text-align: center;
+  min-width: 100px;
+  background-color: #f5f7fa;
+  font-weight: 600;
+}
+
+.totalCell {
+  text-align: right;
+  font-weight: 600;
+  background-color: #f5f7fa;
+  font-size: 14px;
+}
+
+.totalsRow {
+  background-color: #f0f3f6;
+  border-top: 2px solid var(--border-color);
+  font-weight: 600;
+}
+
+.totalsRow td {
+  padding: 16px 18px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .matrix-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 20px 24px;
+  }
+
+  .matrix-controls {
+    gap: 12px;
+  }
+
+  .matrix-controls button {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .last-updated {
+    text-align: center;
+  }
+}
+

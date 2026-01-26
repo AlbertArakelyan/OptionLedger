@@ -1,21 +1,57 @@
-import { useState, useEffect } from "react";
-import { Option, createOption, listOptions, deleteOption } from "../api";
+import { useEffect, useState } from "react";
+import { Option, listOptions as listOptionsApi, createOption as createOptionApi, deleteOption as deleteOptionApi } from "../api";
+import { Table, FormInput, ConfirmModal, LoadingSpinner, toast } from "../components";
+import { useFormState } from "../hooks";
+import styles from "./OptionsPage.module.css";
 
 export default function OptionsPage() {
   const [options, setOptions] = useState<Option[]>([]);
-  const [symbol, setSymbol] = useState("");
-  const [optionType, setOptionType] = useState<"call" | "put">("call");
-  const [strike, setStrike] = useState("");
-  const [expiration, setExpiration] = useState("");
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [confirmModal, setConfirmModal] = useState<{ isOpen: boolean; optionId: number | null }>({ isOpen: false, optionId: null });
+
+  const form = useFormState(
+    { symbol: "", optionType: "call", strike: "", expiration: "" },
+    async (values) => {
+      await createOptionApi(values.symbol.trim(), values.optionType as "call" | "put", parseFloat(values.strike), values.expiration);
+      toast.success("Option created successfully");
+      await loadOptions();
+    },
+    (values) => {
+      const errors: Record<string, string> = {};
+      if (!values.symbol.trim()) {
+        errors.symbol = "Symbol is required";
+      }
+      if (!values.strike || parseFloat(values.strike) <= 0) {
+        errors.strike = "Strike must be a positive number";
+      }
+      if (!values.expiration) {
+        errors.expiration = "Expiration date is required";
+      }
+      return errors;
+    }
+  );
 
   const loadOptions = async () => {
+    setLoading(true);
     try {
-      const data = await listOptions();
+      const data = await listOptionsApi();
       setOptions(data);
-      setError("");
-    } catch (e) {
-      setError(String(e));
+    } catch (error) {
+      toast.error("Failed to load options");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (confirmModal.optionId === null) return;
+    try {
+      await deleteOptionApi(confirmModal.optionId);
+      toast.success("Option deleted successfully");
+      setConfirmModal({ isOpen: false, optionId: null });
+      await loadOptions();
+    } catch (error) {
+      toast.error("Failed to delete option");
     }
   };
 
@@ -23,94 +59,85 @@ export default function OptionsPage() {
     loadOptions();
   }, []);
 
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!symbol.trim() || !strike || !expiration) return;
-    try {
-      await createOption(symbol.trim(), optionType, parseFloat(strike), expiration);
-      setSymbol("");
-      setStrike("");
-      setExpiration("");
-      await loadOptions();
-      setError("");
-    } catch (e) {
-      setError(String(e));
-    }
-  };
+  if (loading) {
+    return <LoadingSpinner message="Loading options..." />;
+  }
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Delete this option?")) return;
-    try {
-      await deleteOption(id);
-      await loadOptions();
-      setError("");
-    } catch (e) {
-      setError(String(e));
-    }
-  };
+  const tableRows = options.map((option) => [
+    option.id,
+    option.symbol,
+    option.option_type.toUpperCase(),
+    `$${option.strike.toFixed(2)}`,
+    option.expiration,
+    <button key="delete" onClick={() => setConfirmModal({ isOpen: true, optionId: option.id })} className={styles.btnDangerSmall}>
+      Delete
+    </button>,
+  ]);
 
   return (
-    <div>
+    <div className={styles.pageContainer}>
       <h2>Options Manager</h2>
-      <form onSubmit={handleCreate} style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          value={symbol}
-          onChange={(e) => setSymbol(e.target.value)}
-          placeholder="Symbol (e.g. AAPL)"
-          style={{ marginRight: "10px", padding: "5px" }}
+
+      <form onSubmit={form.handleSubmit} className={styles.formContainer}>
+        <FormInput
+          label="Symbol"
+          name="symbol"
+          value={form.values.symbol}
+          onChange={form.handleChange}
+          placeholder="e.g. AAPL"
+          error={form.errors.symbol}
+          disabled={form.loading}
         />
-        <select
-          value={optionType}
-          onChange={(e) => setOptionType(e.target.value as "call" | "put")}
-          style={{ marginRight: "10px", padding: "5px" }}
-        >
-          <option value="call">Call</option>
-          <option value="put">Put</option>
-        </select>
-        <input
+        <FormInput
+          label="Type"
+          name="optionType"
+          value={form.values.optionType}
+          onChange={form.handleChange}
+          error={form.errors.optionType}
+          options={[
+            { value: "call", label: "Call" },
+            { value: "put", label: "Put" },
+          ]}
+          disabled={form.loading}
+        />
+        <FormInput
+          label="Strike"
+          name="strike"
           type="number"
           step="0.01"
-          value={strike}
-          onChange={(e) => setStrike(e.target.value)}
-          placeholder="Strike"
-          style={{ marginRight: "10px", padding: "5px", width: "100px" }}
+          value={form.values.strike}
+          onChange={form.handleChange}
+          placeholder="Strike price"
+          error={form.errors.strike}
+          disabled={form.loading}
         />
-        <input
+        <FormInput
+          label="Expiration"
+          name="expiration"
           type="date"
-          value={expiration}
-          onChange={(e) => setExpiration(e.target.value)}
-          style={{ marginRight: "10px", padding: "5px" }}
+          value={form.values.expiration}
+          onChange={form.handleChange}
+          error={form.errors.expiration}
+          disabled={form.loading}
         />
-        <button type="submit">Add Option</button>
+        {form.submitError && <div className="error">{form.submitError}</div>}
+        <button type="submit" disabled={form.loading} className={styles.btnAdd}>
+          {form.loading ? "Adding..." : "Add Option"}
+        </button>
       </form>
-      {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
-      <table border={1} cellPadding={8} cellSpacing={0} style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Symbol</th>
-            <th>Type</th>
-            <th>Strike</th>
-            <th>Expiration</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {options.map((option) => (
-            <tr key={option.id}>
-              <td>{option.id}</td>
-              <td>{option.symbol}</td>
-              <td>{option.option_type}</td>
-              <td>{option.strike}</td>
-              <td>{option.expiration}</td>
-              <td>
-                <button onClick={() => handleDelete(option.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <Table headers={["ID", "Symbol", "Type", "Strike", "Expiration", "Actions"]} rows={tableRows} emptyMessage="No options yet. Create one to get started!" />
+
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        title="Delete Option"
+        message="Are you sure you want to delete this option? This will also delete all associated ownership records."
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmModal({ isOpen: false, optionId: null })}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDangerous={true}
+      />
     </div>
   );
 }

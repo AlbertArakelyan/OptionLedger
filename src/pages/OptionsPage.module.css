@@ -1,0 +1,50 @@
+.pageContainer {
+  padding: 20px 0;
+}
+
+.formContainer {
+  background-color: white;
+  padding: 24px;
+  border-radius: var(--border-radius);
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+.btnAdd {
+  grid-column: 1 / -1;
+  justify-self: start;
+  height: 40px;
+  padding: 10px 24px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.btnDangerSmall {
+  padding: 8px 14px !important;
+  font-size: 12px !important;
+  height: auto !important;
+  background-color: var(--danger-color) !important;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+}
+
+.btnDangerSmall:hover {
+  background-color: var(--danger-hover) !important;
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .btnAdd {
+    grid-column: 1;
+    width: 100%;
+    justify-self: stretch;
+  }
+}
+

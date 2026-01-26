@@ -1,0 +1,79 @@
+.pageContainer {
+  padding: 20px 0;
+}
+
+.formContainer {
+  background-color: white;
+  padding: 24px;
+  border-radius: var(--border-radius);
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: flex-end;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+.formContainer > div {
+  width: 100%;
+}
+
+.formContainer label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text-color);
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+.formContainer input,
+.formContainer select {
+  padding: 11px 13px;
+  font-size: 14px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: white;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.formContainer input:focus,
+.formContainer select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  background-color: #f9fcff;
+}
+
+.btnAdd {
+  height: 40px;
+  padding: 10px 24px;
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.btnDangerSmall {
+  padding: 8px 14px !important;
+  font-size: 12px !important;
+  height: auto !important;
+  background-color: var(--danger-color) !important;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+}
+
+.btnDangerSmall:hover {
+  background-color: var(--danger-hover) !important;
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .btnAdd {
+    width: 100%;
+  }
+}
+
