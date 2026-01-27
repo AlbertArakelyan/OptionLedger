@@ -339,20 +339,156 @@ yarn tauri build
 - Minimal dependencies
 - Idempotent DB initialization
 
-## Build Status
+## ✅ Phase 5: Component Folder Restructuring & Routing Setup
 
+### 1. Component Folder Organization
+**Refactored component structure for better scalability:**
+
+**Before:**
+```
+src/components/
+├── ConfirmModal.tsx
+├── ConfirmModal.module.css
+├── FormInput.tsx
+├── FormInput.module.css
+├── ... (all mixed together)
+└── index.ts
+```
+
+**After:**
+```
+src/components/
+├── ConfirmModal/
+│   ├── ConfirmModal.tsx
+│   └── ConfirmModal.module.css
+├── FormInput/
+│   ├── FormInput.tsx
+│   └── FormInput.module.css
+├── LoadingSpinner/
+│   ├── LoadingSpinner.tsx
+│   └── LoadingSpinner.module.css
+├── Table/
+│   ├── Table.tsx
+│   └── Table.module.css
+├── Toast/
+│   ├── Toast.tsx
+│   └── Toast.module.css
+└── index.ts
+```
+
+**Benefits:**
+- ✅ Component + styles grouped together
+- ✅ Easy to add tests per component in the future
+- ✅ Better IDE navigation
+- ✅ Scalable as components grow
+- ✅ Backward compatible (exports unchanged via index.ts)
+
+### 2. Context Provider Reorganization
+**Moved `useAppState` from hooks to dedicated contexts folder:**
+
+**Before:**
+- `src/hooks/useAppState.tsx` - Confusion: it's a context provider, not a hook
+
+**After:**
+- `src/contexts/AppStateProvider.tsx` - Clear purpose
+- `src/hooks/index.ts` - Still exports `useAppState` and `AppProvider` for convenience
+
+**Benefits:**
+- ✅ Clearer file organization
+- ✅ Separates hooks from context providers
+- ✅ No breaking changes in imports
+
+### 3. React Router DOM Integration
+**Replaced conditional page rendering with proper routing:**
+
+**Before:**
+```tsx
+<main className="app-main">
+  {currentPage === "users" && <UsersPage />}
+  {currentPage === "options" && <OptionsPage />}
+  {currentPage === "ownership" && <OwnershipPage />}
+  {currentPage === "matrix" && <MatrixPage />}
+</main>
+```
+
+**After:**
+```tsx
+<main className="app-main">
+  <Routes>
+    <Route path="/users" element={<UsersPage />} />
+    <Route path="/options" element={<OptionsPage />} />
+    <Route path="/ownership" element={<OwnershipPage />} />
+    <Route path="/matrix" element={<MatrixPage />} />
+    <Route path="/" element={<UsersPage />} />
+  </Routes>
+</main>
+```
+
+**Implementation Details:**
+- ✅ Added `react-router-dom@7.13.0` dependency
+- ✅ Wrapped App with `<HashRouter>` (suitable for Tauri desktop apps)
+- ✅ Created `<AppContent>` component to hold router logic
+- ✅ Used `useNavigate()` for programmatic navigation
+- ✅ Maintains active button state alongside route changes
+- ✅ Default route (/) redirects to /users
+- ✅ No Layouts or Outlets yet (clean, simple routing)
+
+**Benefits:**
+- ✅ Proper SPA routing
+- ✅ Browser history navigation
+- ✅ Cleaner code structure
+- ✅ Better for future scaling (can add nested routes/layouts)
+- ✅ URL reflects current page
+
+### 4. UI Spacing Refinements
+**Optimized padding values for better visual hierarchy:**
+
+- ✅ `.app-header`: `40px 32px` → `20px 32px` (reduced top/bottom padding)
+- ✅ `.app-main`: `32px` → `16px 32px` (reduced top/bottom padding)
+- ✅ `.pageContainer`: `20px 0` → `8px 0` (reduced top/bottom padding in OptionsPage and UsersPage)
+
+**Result:** More compact, data-dense UI that feels modern and professional
+
+---
+
+## ✅ Updated Architecture Summary
+
+### Project Structure (Current)
+```
+src/
+├── components/          (Reusable components, organized by folder)
+│   ├── ConfirmModal/
+│   ├── FormInput/
+│   ├── LoadingSpinner/
+│   ├── Table/
+│   ├── Toast/
+│   └── index.ts
+├── contexts/            (Context providers)
+│   └── AppStateProvider.tsx
+├── hooks/               (Custom hooks)
+│   ├── useAsync.ts
+│   ├── useFormState.ts
+│   └── index.ts
+├── pages/               (Page components)
+│   ├── UsersPage.tsx
+│   ├── OptionsPage.tsx
+│   ├── OwnershipPage.tsx
+│   ├── MatrixPage.tsx
+│   └── *.module.css
+├── styles/              (Design system)
+│   └── global.css
+├── api.ts               (Tauri invoke wrappers)
+├── App.tsx              (Main app with routing)
+└── App.css              (App layout)
+```
+
+---
+
+## Build Status (Phase 5)
+
+✅ **Component Restructuring:** Complete
+✅ **React Router Integration:** Complete
+✅ **UI Spacing Optimization:** Complete
+✅ **Import Paths:** Updated and tested
 ✅ **TypeScript:** No errors
-✅ **Vite Build:** Successful
-✅ **Tauri Build:** Successful
-✅ **Production Bundle:** Generated
-
-## Result
-
-A fully functional, professional-grade desktop application with:
-- Clean, maintainable codebase
-- Reusable components and hooks
-- Beautiful, responsive UI
-- Professional styling system
-- Zero code duplication
-- Strong type safety
-- Ready for production use
+✅ **Build Ready:** `yarn tauri build`
