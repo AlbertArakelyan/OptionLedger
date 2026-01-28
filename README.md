@@ -63,7 +63,7 @@ The compiled application will be in `src-tauri/target/release/bundle/`.
 ## Database Location
 
 SQLite database is stored in the platform-specific app data directory:
-- Windows: `%APPDATA%/com.optionledger.app/optionledger.db`
-- macOS: `~/Library/Application Support/com.optionledger.app/optionledger.db`
-- Linux: `~/.local/share/com.optionledger.app/optionledger.db`
+- Windows: `%APPDATA%/com.albertarakelyan.optionledger/optionledger.db`
+- macOS: `~/Library/Application Support/com.albertarakelyan.optionledger/optionledger.db`
+- Linux: `~/.local/share/com.albertarakelyan.optionledger/optionledger.db`
 
