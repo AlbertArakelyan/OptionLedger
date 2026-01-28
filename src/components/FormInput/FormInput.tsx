@@ -27,7 +27,7 @@ export function FormInput({
 }: FormInputProps) {
   return (
     <div className="form-group">
-      {label && <label htmlFor={name}>{label}</label>}
+      {label && <label htmlFor={name}>{label}:</label>}
       {options ? (
         <select
           id={name}
