@@ -111,9 +111,21 @@ PROJECT STRUCTURE:
   - main.rs
 - src/
   - components/
+    - ComponentName/
+      - ComponentName.tsx
+      - ComponentName.module.css
   - pages/
+    - PageName/
+      - PageName.tsx
+      - PageName.module.css
   - App.tsx
   - api.ts (tauri invoke wrappers)
+
+IMPORT RULES:
+- Do NOT use barrel exports (index.ts files in component/page directories)
+- Import components directly from their files: `import { Table } from "./components/Table/Table"`
+- Avoid importing all components from a single index file (costly and unnecessary JS bundle bloat)
+- Each component must be imported individually where needed
 
 REQUIREMENTS:
 - TypeScript frontend
