@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { User, listUsers as listUsersApi, createUser as createUserApi, deleteUser as deleteUserApi } from "../api";
-import { Table, FormInput, ConfirmModal, LoadingSpinner, toast } from "../components";
-import { useFormState } from "../hooks";
+import { User, listUsers as listUsersApi, createUser as createUserApi, deleteUser as deleteUserApi } from "../../api";
+import { Table, FormInput, ConfirmModal, LoadingSpinner, toast } from "../../components";
+import { useFormState } from "../../hooks";
 import styles from "./UsersPage.module.css";
 
 export default function UsersPage() {

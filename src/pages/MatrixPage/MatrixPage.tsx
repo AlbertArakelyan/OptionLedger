@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { MatrixView, getMatrixView } from "../api";
-import { LoadingSpinner, toast } from "../components";
+import { MatrixView, getMatrixView } from "../../api";
+import { LoadingSpinner, toast } from "../../components";
 import styles from "./MatrixPage.module.css";
 
 export default function MatrixPage() {

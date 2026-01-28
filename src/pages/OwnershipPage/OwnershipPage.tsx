@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { User, Option, listUsers as listUsersApi, listOptions as listOptionsApi, setOwnership as setOwnershipApi, getOwnerships as getOwnershipsApi, OptionOwnership } from "../api";
-import { Table, LoadingSpinner, toast } from "../components";
+import { User, Option, listUsers as listUsersApi, listOptions as listOptionsApi, setOwnership as setOwnershipApi, getOwnerships as getOwnershipsApi, OptionOwnership } from "../../api";
+import { Table, LoadingSpinner, toast } from "../../components";
 import styles from "./OwnershipPage.module.css";
 
 export default function OwnershipPage() {

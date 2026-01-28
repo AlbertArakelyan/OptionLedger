@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { HashRouter, Routes, Route, useNavigate } from "react-router-dom";
-import UsersPage from "./pages/UsersPage";
-import OptionsPage from "./pages/OptionsPage";
-import OwnershipPage from "./pages/OwnershipPage";
-import MatrixPage from "./pages/MatrixPage";
+import UsersPage from "./pages/UsersPage/UsersPage";
+import OptionsPage from "./pages/OptionsPage/OptionsPage";
+import OwnershipPage from "./pages/OwnershipPage/OwnershipPage";
+import MatrixPage from "./pages/MatrixPage/MatrixPage";
 import { Toast } from "./components";
 import { AppProvider } from "./hooks";
 import "./styles/global.css";

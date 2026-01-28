@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Option, listOptions as listOptionsApi, createOption as createOptionApi, deleteOption as deleteOptionApi } from "../api";
-import { Table, FormInput, ConfirmModal, LoadingSpinner, toast } from "../components";
-import { useFormState } from "../hooks";
+import { Option, listOptions as listOptionsApi, createOption as createOptionApi, deleteOption as deleteOptionApi } from "../../api";
+import { Table, FormInput, ConfirmModal, LoadingSpinner, toast } from "../../components";
+import { useFormState } from "../../hooks";
 import styles from "./OptionsPage.module.css";
 
 export default function OptionsPage() {
