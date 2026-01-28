@@ -60,6 +60,7 @@
   transition: all 0.2s ease;
   font-size: 14px;
   box-shadow: var(--shadow);
+  text-decoration: none;
 }
 
 .nav-button:hover {
