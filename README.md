@@ -2,6 +2,13 @@
 
 A local-first desktop application for managing shared stock option ownership between multiple users using one brokerage account.
 
+## Features
+
+- User management (create, list, delete)
+- Options management (create, list, delete)
+- Ownership assignment (quantity per user per option)
+- Matrix view (aggregated ownership table)
+
 ## Stack
 
 - **Backend**: Rust
@@ -9,13 +16,6 @@ A local-first desktop application for managing shared stock option ownership bet
 - **Frontend**: React (TypeScript)
 - **Database**: SQLite (local file)
 - **ORM**: rusqlite
-
-## Features
-
-- User management (create, list, delete)
-- Options management (create, list, delete)
-- Ownership assignment (quantity per user per option)
-- Matrix view (aggregated ownership table)
 
 ## Prerequisites
 
