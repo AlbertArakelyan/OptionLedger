@@ -26,11 +26,13 @@ A local-first desktop application for managing shared stock option ownership bet
 ## Run Instructions
 
 1. Install dependencies:
+
 ```bash
 yarn install
 ```
 
 2. Run in development mode:
+
 ```bash
 yarn tauri dev
 ```
@@ -63,7 +65,7 @@ The compiled application will be in `src-tauri/target/release/bundle/`.
 ## Database Location
 
 SQLite database is stored in the platform-specific app data directory:
+
 - Windows: `%APPDATA%/com.albertarakelyan.optionledger/optionledger.db`
 - macOS: `~/Library/Application Support/com.albertarakelyan.optionledger/optionledger.db`
 - Linux: `~/.local/share/com.albertarakelyan.optionledger/optionledger.db`
-
