@@ -1,8 +1,8 @@
 # OptionLedger
 
-![Screenshot](./screenshot.png)
+> A local-first desktop application for managing shared stock option ownership between multiple users using one brokerage account.
 
-A local-first desktop application for managing shared stock option ownership between multiple users using one brokerage account.
+![Screenshot](./screenshot.png)
 
 ![Tauri](https://img.shields.io/badge/tauri-24C8D8?style=for-the-badge&logo=tauri&logoColor=white)
 ![Rust](https://img.shields.io/badge/rust-000000?style=for-the-badge&logo=rust&logoColor=white)
