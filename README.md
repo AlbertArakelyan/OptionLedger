@@ -2,6 +2,12 @@
 
 A local-first desktop application for managing shared stock option ownership between multiple users using one brokerage account.
 
+![Tauri](https://img.shields.io/badge/tauri-24C8D8?style=for-the-badge&logo=tauri&logoColor=white)
+![Rust](https://img.shields.io/badge/rust-000000?style=for-the-badge&logo=rust&logoColor=white)
+![React](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=333333)
+![Typescript](https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![SQLite](https://img.shields.io/badge/sqlite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+
 ## Features
 
 - User management (create, list, delete)
