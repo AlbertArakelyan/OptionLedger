@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import UsersPage from "./pages/UsersPage/UsersPage";
 import OptionsPage from "./pages/OptionsPage/OptionsPage";
